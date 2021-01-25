@@ -38,22 +38,20 @@ class Juego{
     generarSecuencia(){
 
         this.secuencia = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
-
         
     }
 
-    //declaramos la funcion siguiente nivel
+  
     siguienteNivel(){
 
-        /*
-        Llamara a iluminar secuencia cada vez que llegue a un nuevo nivel iluminara
-        la secuencia */
+
         this.ilumonarSecuencia()
+        //Llamamos a la funcion agregarEventosClick
+        this.agregarEventosClick()
         
 
 
     }
-    // Declaramos funcion que transforma los numeros de la secuencia en colores
     transformarNumeroAColor(numero){
 
         switch(numero){
@@ -70,26 +68,14 @@ class Juego{
         }
 
     }
-     // Declaramos  la funcion iluminar secuencia
+    
     ilumonarSecuencia(){
 
         for (let i = 0; i < this.nivel; i++){
         
-        /* Obtenemos el color para cada i que vayamos obteniendo
-           llamamos la funcion trasformarNuAColor y le pasamos el numero
-           de la secuencia en la que estamos */
+    
 
             let color = this.transformarNumeroAColor(this.secuencia[i])
-
-        // Agregamos un tiempo de espera entre el ciclo para que el for no
-        // se ejecute de una vez si no que tenga un tiempo de espera por cada
-        // color que se ilumina en la secuencia
-
-        // Agregar 1000 * i es importante ya que a medida de que va avanzando la
-        // secuenta el usuario va a tener tiempo de verla
-
-        //Tendremos un error por que definimos color con var y cada vez que
-        // itera el ciclo for se estara reasginando el mismo valor a la variable
 
             setTimeout(() => this.iluminarColor(color), 1000 * i)
         }
@@ -97,26 +83,17 @@ class Juego{
 
         }
 
-        /* Declaramos la funcion iluminar color en la cual obtenemos
-           el color por parametro */
-
         iluminarColor(color){
-        /* Traemmos los colores que teniamos guardados en un objeto y
-           que hacen referencia a lo botones que estan en variables
-
-           Añadimos un nueva clase para que se ilumine el color que ya
-           esta establecida en css */
+    
 
             this.colores[color].classList.add('light')
-        // Llamamos una funcion para que se apague el color en determinado tiempo
+        
 
         setTimeout(()=> this.apagarColor(color), 350)
 
 
         }
 
-        /* Declaramos la funcion apagar color que recibe un color por parametro
-         y con remove le removemos la clase light */
 
         apagarColor(color){
 
@@ -124,7 +101,38 @@ class Juego{
 
         }
 
+        //agregamos la funcion eventos click
+        agregarEventosClick(){
+        //por cada uno de los colores le agregaremos el eventos click
+        //este evento se ejecutara asincronamente 
+
+        /* Lo que hacemos com bind()  es decirle ¡N0! tu no seras un elemento de HTML
+            tu seras Game(), digamos que cambia su forma de pensar del this.
+        
+        */
+            this.colores.celeste.addEventListener('click', this.elegirColor.bind(this))
+            this.colores.verde.addEventListener('click', this.elegirColor.bind(this))
+            this.colores.violeta.addEventListener('click', this.elegirColor.bind(this))
+            this.colores.naranja.addEventListener('click', this.elegirColor.bind(this))
+        }
+
+        // declaramos la funcion elegir color
+        elegirColor(event){
+        //obtenemos el evento por el parametro y podremos imprimirlo 
+                //console.log(event)
+        /* Imprimimos this y nos damos cuenta que aqui this hace referencia
+           a los botones porque this es un escuchar de eventos que representa
+           el html el cual le asignamos ese evento
+           
+           Podremos cambiar a quien  hace referencia this con bind
+           */
+
+
+        }
+
     }
+
+        
    
 
 
