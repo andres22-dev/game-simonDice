@@ -12,9 +12,9 @@ class Juego{
     constructor(){
 
         this.inicializar()
-        //llamamos a la funcion generar secuencia
         this.generarSecuencia()
-
+        this.siguienteNivel()
+        
     }
 
     inicializar(){
@@ -22,13 +22,10 @@ class Juego{
         
         buttonStart.classList.add('hide');
 
-        //indicamos el nivel en el que estamos
-        this.nivel = 1;
+        this.nivel = 7;
 
-        //guardamos los botones 
         this.colores = {
-        /* Si la variable que le asignamos al atributo tiene el mismo nombre que
-           el atributo javascript lo entendera */
+     
             celeste,
             violeta,
             naranja,
@@ -38,44 +35,102 @@ class Juego{
         
     }
 
-    //creamos la funcion
     generarSecuencia(){
 
-    /* Siempre que queramos poner un atributo aunque este no exista
-       con this se guardara internamente en el objeto del juego 
-
-       Generamos un array con la palabra new array y por parametro
-       le indicamos cuantos elementos queremos que tenga
-
-       Luego lo utilizamos con la funcion fill que nos definira
-       un valor en cada uno de los elementos de nuestro array
-
-       Ya que si los elementos no tienen ningun valor no podriamos
-       usar una funcion como map por que no hay elementos ni valores
-       en ese array
-
-       Dentro del map utilizamos la funcion Math.random para obtener
-       un numero aleatorio y lo multiplicamos * 4 para obtner un numero
-       entero
-
-       Utilizamos Math.floor y dentro le pondremos el random para redondear
-       el numero
-
-
-       */
         this.secuencia = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
 
         
-
     }
 
+    //declaramos la funcion siguiente nivel
+    siguienteNivel(){
+
+        /*
+        Llamara a iluminar secuencia cada vez que llegue a un nuevo nivel iluminara
+        la secuencia */
+        this.ilumonarSecuencia()
+        
 
 
-}
+    }
+    // Declaramos funcion que transforma los numeros de la secuencia en colores
+    transformarNumeroAColor(numero){
+
+        switch(numero){
+
+            case 0:
+                return 'celeste'
+            case 1:
+                return 'violeta'
+            case 2:
+                return 'naranja'
+            case 3:
+                return 'verde'
+
+        }
+
+    }
+     // Declaramos  la funcion iluminar secuencia
+    ilumonarSecuencia(){
+
+        for (let i = 0; i < this.nivel; i++){
+        
+        /* Obtenemos el color para cada i que vayamos obteniendo
+           llamamos la funcion trasformarNuAColor y le pasamos el numero
+           de la secuencia en la que estamos */
+
+            let color = this.transformarNumeroAColor(this.secuencia[i])
+
+        // Agregamos un tiempo de espera entre el ciclo para que el for no
+        // se ejecute de una vez si no que tenga un tiempo de espera por cada
+        // color que se ilumina en la secuencia
+
+        // Agregar 1000 * i es importante ya que a medida de que va avanzando la
+        // secuenta el usuario va a tener tiempo de verla
+
+        //Tendremos un error por que definimos color con var y cada vez que
+        // itera el ciclo for se estara reasginando el mismo valor a la variable
+
+            setTimeout(() => this.iluminarColor(color), 1000 * i)
+        }
+
+
+        }
+
+        /* Declaramos la funcion iluminar color en la cual obtenemos
+           el color por parametro */
+
+        iluminarColor(color){
+        /* Traemmos los colores que teniamos guardados en un objeto y
+           que hacen referencia a lo botones que estan en variables
+
+           Añadimos un nueva clase para que se ilumine el color que ya
+           esta establecida en css */
+
+            this.colores[color].classList.add('light')
+        // Llamamos una funcion para que se apague el color en determinado tiempo
+
+        setTimeout(()=> this.apagarColor(color), 350)
+
+
+        }
+
+        /* Declaramos la funcion apagar color que recibe un color por parametro
+         y con remove le removemos la clase light */
+
+        apagarColor(color){
+
+            this.colores[color].classList.remove('light')
+
+        }
+
+    }
+   
+
+
 
 function empezarJuego(){
 
-    // A modo de prueba utilizaremos window con la variable juego para debuggearla
     window.juego = new Juego()
 
 }
