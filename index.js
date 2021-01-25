@@ -20,7 +20,8 @@ class Juego{
 
     inicializar(){
 
-        
+        this.siguienteNivel = this.siguienteNivel.bind(this)
+        this.elegirColor = this.elegirColor.bind(this)
         buttonStart.classList.add('hide');
 
         this.nivel = 1;
@@ -128,19 +129,19 @@ class Juego{
      
         agregarEventosClick(){
        
-            this.colores.celeste.addEventListener('click', this.elegirColor.bind(this))
-            this.colores.verde.addEventListener('click', this.elegirColor.bind(this))
-            this.colores.violeta.addEventListener('click', this.elegirColor.bind(this))
-            this.colores.naranja.addEventListener('click', this.elegirColor.bind(this))
+            this.colores.celeste.addEventListener('click', this.elegirColor)
+            this.colores.verde.addEventListener('click', this.elegirColor)
+            this.colores.violeta.addEventListener('click', this.elegirColor)
+            this.colores.naranja.addEventListener('click', this.elegirColor)
         }
 
         //agregamos funcion eliminar evento en ves de add ponemos remove para que se borre
         eliminarEventosClick(){
        
-            this.colores.celeste.removeEventListener('click', this.elegirColor.bind(this))
-            this.colores.verde.removeEventListener('click', this.elegirColor.bind(this))
-            this.colores.violeta.removeEventListener('click', this.elegirColor.bind(this))
-            this.colores.naranja.removeEventListener('click', this.elegirColor.bind(this))
+            this.colores.celeste.removeEventListener('click', this.elegirColor)
+            this.colores.verde.removeEventListener('click', this.elegirColor)
+            this.colores.violeta.removeEventListener('click', this.elegirColor)
+            this.colores.naranja.removeEventListener('click', this.elegirColor)
         }
 
 
@@ -169,7 +170,7 @@ class Juego{
                 this.nivel++
                 // si el usuario pasa de nivel ya no tiene porque elegir colores
 
-                //this.eliminarEventosClick()
+                this.eliminarEventosClick()
 
                 if(this.nivel === ULTIMO_NIVEL + 1){
 
@@ -179,7 +180,7 @@ class Juego{
                     //si no es el ultimo nivel tiene que avanzar de nivel
                     //agregamos delay al pasar de nivel
 
-                    setTimeout(this.siguienteNivel.bind(this), 1500)
+                    setTimeout(this.siguienteNivel, 1500)
 
 
                 }
@@ -189,7 +190,7 @@ class Juego{
 
           }else{
 
-            console.log(`Perdio`);
+            //perdio
           }
 
 
