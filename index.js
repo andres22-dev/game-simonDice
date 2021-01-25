@@ -5,9 +5,9 @@ const celeste = document.querySelector('#celeste');
 const violeta = document.querySelector('#violeta');
 const naranja = document.querySelector('#naranja');
 const verde = document.querySelector('#verde');
-
-//agregamos el ultimo nivel
 const ULTIMO_NIVEL = 10
+
+
 class Juego{
 
     constructor(){
@@ -22,6 +22,8 @@ class Juego{
 
         this.siguienteNivel = this.siguienteNivel.bind(this)
         this.elegirColor = this.elegirColor.bind(this)
+        //agregamos funcion para que agregue el boton cuando el juego inicie de nuevo
+        this.toggleBtnEmpezar()
         buttonStart.classList.add('hide');
 
         this.nivel = 1;
@@ -37,6 +39,22 @@ class Juego{
         
     }
 
+    //declaramos la funcion que es un condicional
+    //Si el boton tiene la clase hide la remueva
+    //Si no la tiene se la añadimos
+    toggleBtnEmpezar(){
+
+        if(buttonStart.classList.contains('hide')){
+
+
+            buttonStart.classList.remove('hide')
+        }else{
+
+            buttonStart.classList.add('hide')
+        }
+
+    }
+
     generarSecuencia(){
 
         this.secuencia = new Array(ULTIMO_NIVEL).fill(0).map(n => Math.floor(Math.random() * 4))
@@ -46,7 +64,6 @@ class Juego{
   
     siguienteNivel(){
 
-        //agregamos subnivel que empieza en 0 en cada uno de los niveles
         this.subnivel = 0
 
         this.nombreAtributo = 'valor'
@@ -75,7 +92,6 @@ class Juego{
 
     }
 
-    //agregamos la funcion transformar color a numero y recibe un color por parametro
 
     transformarColorANumero(color){
 
@@ -135,7 +151,6 @@ class Juego{
             this.colores.naranja.addEventListener('click', this.elegirColor)
         }
 
-        //agregamos funcion eliminar evento en ves de add ponemos remove para que se borre
         eliminarEventosClick(){
        
             this.colores.celeste.removeEventListener('click', this.elegirColor)
@@ -144,41 +159,52 @@ class Juego{
             this.colores.naranja.removeEventListener('click', this.elegirColor)
         }
 
+        //Declaramos las funciones ganoeljuego y elimino el juego
+        //Que ejecutaran la alerta la funcion de la libreria que estamos utilizando
+
+        ganoElJuego(){
+
+            swal('Platzi', 'Felicitaciones Ganaste', 'success')
+            //Como el swal devuelve una promesa una ves cerramos la alerta
+            //Podremos indicarle que inicie de nuevo el juego
+            .then(()=> this.inicializar())
+        }
+        perdioElJuego(){
+
+            swal('Platzi', 'Lo lamentamos, perdiste', 'error')
+
+            .then(()=> this.eliminarEventosClick())    
+        }
+
+
+
+
 
 
         elegirColor(event){
        
-        //obtenemos el nombre del color que esta definido en la propiedad dataset
-        //que previamente definimos en nuestro elemento de html
+
           const nombreColor = event.target.dataset.color
-          // asignamos la funcion transformar color a numero a numeroColor y
-          // a esa funcion le pasamos el nombre color por parametro
+  
           const numeroColor = this.transformarColorANumero(nombreColor)
           this.iluminarColor(nombreColor)
 
-          // si el numero del color es igual al que esta en la secuencia
 
           if(numeroColor === this.secuencia[this.subnivel]){
 
-            //el subnivel sube
             this.subnivel++
 
-            // si el subnivel es igual el nivel 
             if(this.subnivel === this.nivel){
 
-                // el nivel aumenta uno
                 this.nivel++
-                // si el usuario pasa de nivel ya no tiene porque elegir colores
 
                 this.eliminarEventosClick()
 
                 if(this.nivel === ULTIMO_NIVEL + 1){
 
-                    console.log(`ganaste`)
-
+                    this.ganoElJuego()
                 }else{
-                    //si no es el ultimo nivel tiene que avanzar de nivel
-                    //agregamos delay al pasar de nivel
+                    
 
                     setTimeout(this.siguienteNivel, 1500)
 
@@ -190,7 +216,8 @@ class Juego{
 
           }else{
 
-            //perdio
+            this.perdioElJuego()
+
           }
 
 
